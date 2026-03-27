@@ -125,7 +125,7 @@ export function MarketCard({ id, question, description, yesPrice, noPrice, resol
       )}
 
       {/* Mini Graph */}
-      <div className="w-full mb-6 opacity-60" style={{ height: 64, minHeight: 64 }}>
+      <div className="w-full mb-6 opacity-60">
         <ProbabilityMiniChart data={graphData} />
       </div>
 

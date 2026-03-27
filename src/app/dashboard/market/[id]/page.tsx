@@ -196,25 +196,32 @@ export default function MarketDetailPage() {
   const calculateCashoutValue = (bet: BetRecord) => {
     if (bet.is_exited) return 0;
 
-    // Cashout logic: if price hasn't moved, you should be able to get your principal back.
-    // We model the bet as buying exposure at entry price (prob_at_time) and marking-to-market at currentProb.
-    const pEntry = typeof bet.prob_at_time === 'number' ? bet.prob_at_time : currentProb
-    const pNow = currentProb
+    // Mirror the RPC logic exactly:
+    // Compute pool_yes / pool_no excluding the bet being exited,
+    // then recalculate the market probability at that state.
+    let py = 0, pn_pool = 0
+    for (const b of bets) {
+      if (b.is_exited || b.id === bet.id) continue
+      if (b.outcome.toUpperCase() === 'YES') py += b.amount
+      else pn_pool += b.amount
+    }
+
+    const { p_initial, i_initial } = market!
+    const probWithoutBet = (p_initial * i_initial + py) / Math.max(i_initial + py + pn_pool, 0.0001)
 
     const clamp01 = (x: number) => Math.max(0, Math.min(1, x))
-    const pe = clamp01(pEntry)
-    const pn = clamp01(pNow)
+    const pe = clamp01(typeof bet.prob_at_time === 'number' ? bet.prob_at_time : 0.5)
+    const pn = clamp01(probWithoutBet)
 
     const isYes = bet.outcome.toUpperCase() === 'YES'
 
-    // Avoid division by 0 at extremes
     if (isYes) {
       if (pe <= 0) return bet.amount
       return Math.max(0, Math.round((bet.amount * pn) / pe))
+    } else {
+      if (pe >= 1) return bet.amount
+      return Math.max(0, Math.round((bet.amount * (1 - pn)) / (1 - pe)))
     }
-
-    if (pe >= 1) return bet.amount
-    return Math.max(0, Math.round((bet.amount * (1 - pn)) / (1 - pe)))
   }
 
   const handleExitTrade = async (betId: string) => {
@@ -304,7 +311,7 @@ export default function MarketDetailPage() {
           <h2 className="text-2xl font-bold uppercase mb-6 flex items-center gap-2">
             <TrendingUp className="w-6 h-6" /> Probability History
           </h2>
-          <div className="w-full mb-4" style={{ height: 320, minHeight: 320 }}>
+          <div className="w-full mb-4">
             <ProbabilityTimeChart data={graphData} />
           </div>
         </div>
