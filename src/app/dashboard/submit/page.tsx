@@ -61,7 +61,7 @@ export default function SubmitMarketPage() {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-3xl mx-auto p-6 lg:p-12 min-h-screen bg-[#f4f0e6] font-mono text-black"
+      className="max-w-3xl mx-auto p-6 lg:p-10 font-mono text-black"
     >
       <div className="mb-12 p-8 neo-box bg-[#fef08a]">
         <div className="flex items-center gap-4 mb-4">

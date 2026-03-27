@@ -232,8 +232,8 @@ export default function MarketDetailPage() {
     }
   }
 
-  if (loading) return <div className="min-h-screen bg-[#f4f0e6] flex items-center justify-center"><Loader2 className="w-12 h-12 animate-spin text-black" /></div>
-  if (!market) return <div className="min-h-screen bg-[#f4f0e6] flex items-center justify-center text-black font-bold text-2xl">Market not found.</div>
+  if (loading) return <div className="min-h-[60vh] flex items-center justify-center"><Loader2 className="w-12 h-12 animate-spin text-black" /></div>
+  if (!market) return <div className="min-h-[60vh] flex items-center justify-center text-black font-bold text-2xl">Market not found.</div>
 
   const aTitle = market.option_a || 'YES'
   const bTitle = market.option_b || 'NO'
@@ -241,12 +241,12 @@ export default function MarketDetailPage() {
   const noPrice = 100 - yesPrice
 
   return (
-    <div className="min-h-screen bg-[#f4f0e6] font-mono text-black p-6 lg:p-12">
+    <div className="font-mono text-black p-6 lg:p-10">
       <button 
         onClick={() => router.push('/dashboard')}
-        className="mb-8 flex items-center gap-2 font-bold uppercase hover:underline"
+        className="mb-6 flex items-center gap-2 font-bold uppercase hover:underline text-sm"
       >
-        <ArrowLeft className="w-5 h-5" /> Back to Dashboard
+        <ArrowLeft className="w-4 h-4" /> Back to Markets
       </button>
 
       <div className="max-w-4xl mx-auto space-y-8">
@@ -304,7 +304,7 @@ export default function MarketDetailPage() {
           <h2 className="text-2xl font-bold uppercase mb-6 flex items-center gap-2">
             <TrendingUp className="w-6 h-6" /> Probability History
           </h2>
-          <div className="h-64 sm:h-80 w-full mb-4">
+          <div className="w-full mb-4" style={{ height: 320, minHeight: 320 }}>
             <ProbabilityTimeChart data={graphData} />
           </div>
         </div>

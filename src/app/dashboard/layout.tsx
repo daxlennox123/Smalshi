@@ -1,11 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-
 import { createClient } from '@/lib/supabase/client'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { BarChart3, Home, PlusCircle, Trophy, LogOut, User } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 export default function DashboardLayout({
   children,
@@ -13,6 +13,7 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   const router = useRouter()
+  const pathname = usePathname()
   const supabase = createClient()
 
   const [credits, setCredits] = useState<number | null>(null)
@@ -43,6 +44,13 @@ export default function DashboardLayout({
     router.push('/login')
   }
 
+  const navItems = [
+    { href: '/dashboard', label: 'Markets', icon: Home, activeColor: 'bg-[#fef08a]', hoverColor: 'hover:bg-[#fef08a]', exact: true },
+    { href: '/dashboard/account', label: 'Account', icon: User, activeColor: 'bg-[#e0e7ff]', hoverColor: 'hover:bg-[#fcf9f2]', exact: false },
+    { href: '/dashboard/submit', label: 'Submit Market', icon: PlusCircle, activeColor: 'bg-[#bbf7d0]', hoverColor: 'hover:bg-[#bbf7d0]', exact: false },
+    { href: '/dashboard/leaderboard', label: 'Leaderboard', icon: Trophy, activeColor: 'bg-[#fecdd3]', hoverColor: 'hover:bg-[#fecdd3]', exact: false },
+  ]
+
   return (
     <div className="min-h-screen bg-[#f4f0e6] text-black flex">
       {/* Sidebar */}
@@ -57,34 +65,24 @@ export default function DashboardLayout({
         </div>
 
         <nav className="flex-1 px-4 py-6 space-y-2">
-          <Link 
-            href="/dashboard" 
-            className="flex items-center gap-3 px-4 py-3 border-2 border-black bg-[#fef08a] text-black font-bold uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
-          >
-            <Home className="w-5 h-5" />
-            Markets
-          </Link>
-          <Link 
-            href="/dashboard/account" 
-            className="flex items-center gap-3 px-4 py-3 border-2 border-black bg-white text-black font-bold uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-[#fcf9f2] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
-          >
-            <User className="w-5 h-5" />
-            Account
-          </Link>
-          <Link 
-            href="/submit" 
-            className="flex items-center gap-3 px-4 py-3 border-2 border-black bg-white text-black font-bold uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-[#bbf7d0] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
-          >
-            <PlusCircle className="w-5 h-5" />
-            Submit Market
-          </Link>
-          <Link 
-            href="/leaderboard" 
-            className="flex items-center gap-3 px-4 py-3 border-2 border-black bg-white text-black font-bold uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-[#fecdd3] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
-          >
-            <Trophy className="w-5 h-5" />
-            Leaderboard
-          </Link>
+          {navItems.map(({ href, label, icon: Icon, activeColor, hoverColor, exact }) => {
+            const isActive = exact ? pathname === href : pathname.startsWith(href)
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={cn(
+                  'flex items-center gap-3 px-4 py-3 border-2 border-black text-black font-bold uppercase transition-all',
+                  isActive
+                    ? `${activeColor} shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] translate-x-[2px] translate-y-[2px]`
+                    : `bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${hoverColor} hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`
+                )}
+              >
+                <Icon className="w-5 h-5" />
+                {label}
+              </Link>
+            )
+          })}
         </nav>
 
         <div className="p-4 border-t-4 border-black">
@@ -103,10 +101,8 @@ export default function DashboardLayout({
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 ml-64 p-8">
-        <div className="max-w-5xl mx-auto">
-          {children}
-        </div>
+      <main className="flex-1 ml-64">
+        {children}
       </main>
     </div>
   )

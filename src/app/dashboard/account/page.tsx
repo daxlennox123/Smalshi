@@ -215,7 +215,7 @@ export default function AccountPage() {
   }
 
   return (
-    <div className="space-y-10 p-6 lg:p-12 min-h-screen bg-[#f4f0e6] font-mono text-black">
+    <div className="space-y-10 p-6 lg:p-10 font-mono text-black">
       <div className="border-l-8 border-black pl-6">
         <h1 className="text-5xl font-bold tracking-tight mb-2 uppercase">Account</h1>
         <p className="text-gray-800 font-bold text-lg">Your active trades, P&amp;L, and markets you created.</p>

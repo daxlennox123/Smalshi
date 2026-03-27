@@ -99,7 +99,7 @@ export function MarketCard({ id, question, description, yesPrice, noPrice, resol
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      onClick={() => router.push(`/market/${id}`)}
+      onClick={() => router.push(`/dashboard/market/${id}`)}
       className="neo-box flex flex-col p-6 cursor-pointer bg-white"
     >
       <div className="flex justify-between items-start mb-4">
@@ -125,7 +125,7 @@ export function MarketCard({ id, question, description, yesPrice, noPrice, resol
       )}
 
       {/* Mini Graph */}
-      <div className="h-16 w-full mb-6 opacity-60">
+      <div className="w-full mb-6 opacity-60" style={{ height: 64, minHeight: 64 }}>
         <ProbabilityMiniChart data={graphData} />
       </div>
 

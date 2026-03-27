@@ -50,7 +50,7 @@ export default function DashboardPage() {
   }, [supabase])
 
   return (
-    <div className="space-y-8 p-6 lg:p-12 min-h-screen bg-[#f4f0e6] font-mono text-black">
+    <div className="space-y-8 p-6 lg:p-10 font-mono text-black">
       <div className="border-l-8 border-black pl-6 mb-12">
         <h1 className="text-5xl font-bold tracking-tight mb-2 uppercase text-black">Active Markets</h1>
         <p className="text-gray-800 font-bold text-lg">Trade on school events, announcements, and more.</p>
