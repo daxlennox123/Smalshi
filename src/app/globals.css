@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f4f0e6;
+  --foreground: #1a1a1a;
+  --panel-bg: #ffffff;
+  --border-color: #1a1a1a;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Courier New', Courier, monospace, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Base styles for the brutalist 'hackery' look */
+* {
+  border-radius: 0 !important;
+}
+
+.neo-box {
+  background-color: var(--panel-bg);
+  color: var(--foreground);
+  border: 3px solid var(--border-color);
+  box-shadow: 6px 6px 0px var(--border-color);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.neo-box:active {
+  transform: translate(3px, 3px);
+  box-shadow: 3px 3px 0px var(--border-color);
+}
+
+.neo-input {
+  background-color: var(--panel-bg);
+  color: var(--foreground);
+  border: 2px solid var(--border-color);
+  padding: 0.75rem 1rem;
+}
+
+.neo-input:focus {
+  outline: none;
+  background-color: #fcf9f2;
+}
+
+/* Utilities for hiding scrollbar but allowing scrolling */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
